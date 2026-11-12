@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="27.363922119140625 2 722.6361083984375 526.2550048828125"><defs>
+      <linearGradient id="m1L" x1="0.2" y1="0" x2="0.6" y2="1">
+        <stop offset="0" stop-color="#F6E3B0"/><stop offset="0.45" stop-color="#D9B672"/><stop offset="1" stop-color="#B08A45"/></linearGradient>
+      <linearGradient id="m1R" x1="0.8" y1="0" x2="0.4" y2="1">
+        <stop offset="0" stop-color="#C6A15B"/><stop offset="0.55" stop-color="#9C7838"/><stop offset="1" stop-color="#6F5224"/></linearGradient>
+      <linearGradient id="m1D" x1="0.3" y1="0" x2="0.7" y2="1">
+        <stop offset="0" stop-color="#5BEBD8"/><stop offset="0.5" stop-color="#16B6A4"/><stop offset="1" stop-color="#0A7469"/></linearGradient>
+    </defs><g transform="translate(230 0) scale(1.6)">
+    <path d="M100 20 L100 86 L60 174 L26 174 Z" fill="url(#m1L)"/><path d="M100 20 L174 174 L140 174 L100 86 Z" fill="url(#m1R)"/>
+    <path d="M100 99 C100 99 119 123 119 140 A19 19 0 1 1 81 140 C81 123 100 99 100 99 Z" fill="url(#m1D)"/><path d="M100 20 L100 86 L97 92 L97 27 Z" fill="#FFF6DC" opacity="0.55"/>
+      <ellipse cx="92" cy="133" rx="4.2" ry="8" transform="rotate(28 92 133)" fill="#FFFFFF" opacity="0.45"/></g><text x="390" y="440" font-family="Montserrat" font-weight="700" font-size="104" text-anchor="middle"
+      textLength="660" lengthAdjust="spacing"><tspan fill="#071725">APEX</tspan><tspan fill="#C6A15B"> CORE</tspan></text>
+    <text x="390" y="498" font-family="Montserrat" font-weight="600" font-size="25.5" text-anchor="middle"
+      textLength="660" lengthAdjust="spacing" fill="#102B40">OIL AND ENERGY RESOURCES LTD</text>
+    <rect x="60" y="458" width="660" height="3" fill="#C6A15B"/></svg>
