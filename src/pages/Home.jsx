@@ -75,7 +75,7 @@ function Hero() {
           </motion.div>
           <motion.div {...a(0.54)} className="mt-10 flex items-center gap-4">
             <div className="flex -space-x-3">
-              {['home-modern', 'home-dusk', 'panel-close'].map((n) => (
+              {['wind-solar', 'home-dusk', 'panel-close'].map((n) => (
                 <span key={n} className="h-11 w-11 overflow-hidden rounded-full ring-[3px] ring-navy">
                   <Img name={n} alt="" sizes="44px" />
                 </span>
@@ -527,7 +527,7 @@ function FaqSection() {
           <SectionHeading tag="FAQ" title="Questions people ask before going solar" intro="Straight answers to the most common questions. Can't find yours? Our advisors are a phone call away." />
           <Reveal delay={0.1} className="relative mt-10 max-w-sm">
             <div className="arch aspect-[4/5] overflow-hidden">
-              <Img name="engineer-portrait" alt="ApexCore technician in a hard hat beside an electrical installation" sizes="(min-width:1024px) 30vw, 90vw" />
+              <Img name="home-modern" alt="Modern family home with clean, solar-ready architecture" sizes="(min-width:1024px) 30vw, 90vw" />
             </div>
             <a href={`tel:${SITE.phoneHref}`} className="absolute -right-2 bottom-8 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-xl sm:-right-10">
               <span className="grid h-11 w-11 place-items-center rounded-xl bg-flame text-white">

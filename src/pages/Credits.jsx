@@ -10,7 +10,7 @@ const crumbs = [
 const photos = [
   'farm-sky', 'farm-clouds', 'panels-aerial', 'wind-sunset', 'offshore-wind', 'installer-wiring', 'rooftop-commercial', 'installer-roof', 'solar-campus',
   'wind-solar', 'wind-hills', 'grid-sunset', 'panel-close', 'aerial-grid', 'panel-texture', 'electrician-panel', 'roof-team', 'substation', 'farm-aerial',
-  'home-dusk', 'engineer-portrait', 'engineer-meter', 'team-office', 'ev-charging', 'partnership', 'roof-building', 'home-modern',
+  'home-dusk', 'engineer-meter', 'team-office', 'ev-charging', 'partnership', 'roof-building', 'home-modern',
 ];
 
 export default function Credits() {
