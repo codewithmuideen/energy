@@ -7,7 +7,8 @@ import PageHero from '../components/PageHero';
 import SectionHeading from '../components/SectionHeading';
 import BackgroundVideo from '../components/BackgroundVideo';
 import { Reveal } from '../components/Reveal';
-import { mission, process, values, vision, whyUs } from '../data/content';
+import { ProcessZigzag, WhyChoose } from '../components/Sections';
+import { mission, values, vision } from '../data/content';
 import { breadcrumbSchema } from '../utils/seo';
 
 const crumbs = [
@@ -43,16 +44,16 @@ export default function About() {
       <section id="who-we-are" className="section scroll-mt-24">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">
           <Reveal className="relative">
-            <div className="relative overflow-hidden rounded-3xl">
+            <div className="arch relative overflow-hidden">
               <div className="aspect-[4/5]">
                 <Img name="roof-team" alt="Installation crew carrying solar panels across a large roof" sizes="(min-width:1024px) 45vw, 100vw" />
               </div>
             </div>
-            <div className="absolute -bottom-8 right-3 max-w-[240px] md:-right-8 rounded-2xl bg-solar p-6 text-white shadow-xl ">
+            <div className="absolute -bottom-8 right-3 max-w-[240px] md:-right-8 rounded-2xl bg-lime p-6 text-navy shadow-xl">
               <p className="font-display text-4xl font-extrabold">Lagos</p>
-              <p className="mt-1 text-sm text-white/85">Head office in Surulere, serving clients nationwide.</p>
+              <p className="mt-1 text-sm text-navy/75">Head office in Surulere, serving clients nationwide.</p>
             </div>
-            <span className="absolute -left-3 -top-3 hidden h-6 w-6 bg-solar sm:block" aria-hidden="true" />
+            
           </Reveal>
           <div>
             <SectionHeading tag="Who we are" title="A glimpse closer at ApexCore Energy" />
@@ -74,7 +75,7 @@ export default function About() {
                     <span>{c.pct}%</span>
                   </div>
                   <div className="mt-2 h-1.5 rounded-full bg-line">
-                    <div className="h-full rounded-full bg-solar" style={{ width: `${c.pct}%` }} />
+                    <div className="h-full rounded-full bg-gradient-to-r from-solar to-lime" style={{ width: `${c.pct}%` }} />
                   </div>
                 </div>
               ))}
@@ -102,7 +103,7 @@ export default function About() {
               { icon: Target, title: 'Our Mission', text: mission },
             ].map((v, i) => (
               <Reveal key={v.title} delay={i * 0.1} className="rounded-3xl border border-white/15 bg-white/[0.07] p-8 backdrop-blur-md md:p-10">
-                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-solar text-white">
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-lime text-navy">
                   <v.icon size={26} aria-hidden="true" />
                 </span>
                 <h3 className="mt-6 text-2xl font-bold !text-white">{v.title}</h3>
@@ -120,7 +121,7 @@ export default function About() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {values.map((v, i) => (
               <Reveal key={v.title} delay={(i % 3) * 0.08} className="card p-8">
-                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-solar-50 text-solar-600">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-flame-soft text-flame">
                   <Icon name={v.icon} size={26} />
                 </span>
                 <h3 className="mt-6 text-xl font-bold">{v.title}</h3>
@@ -131,49 +132,17 @@ export default function About() {
         </div>
       </section>
 
-      {/* Approach timeline */}
-      <section className="section bg-paper">
-        <div className="container-x grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionHeading tag="Our Approach" title="One accountable team, from survey to support" intro="Our process is designed to remove guesswork and give you confidence at every stage." />
-            <Reveal delay={0.1} className="mt-10 overflow-hidden rounded-3xl">
-              <div className="aspect-[4/3]">
-                <Img name="engineer-meter" alt="Engineer checking an electricity meter" sizes="(min-width:1024px) 35vw, 100vw" />
-              </div>
-            </Reveal>
-          </div>
-          <ol className="relative space-y-6 lg:col-span-7 lg:pt-6">
-            <div className="absolute bottom-6 left-7 top-6 w-px bg-solar/30" aria-hidden="true" />
-            {process.map((p, i) => (
-              <Reveal as="li" key={p.step} delay={i * 0.08} className="relative flex gap-6">
-                <span className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-full bg-solar font-display font-bold text-white ring-8 ring-paper">{p.step}</span>
-                <div className="flex-1 rounded-2xl bg-white p-6 ring-1 ring-line">
-                  <h3 className="text-lg font-bold">{p.title}</h3>
-                  <p className="mt-2 leading-relaxed">{p.text}</p>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <ProcessZigzag />
 
-      {/* Why us */}
-      <section id="responsibility" className="section scroll-mt-24 pb-40 md:pb-48">
+      <WhyChoose />
+
+      {/* Promise band */}
+      <section id="responsibility" className="scroll-mt-24 pb-40 pt-16 md:pb-48 md:pt-20">
         <div className="container-x">
-          <SectionHeading center tag="Why ApexCore" title="What you can expect working with us" />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {whyUs.map((w, i) => (
-              <Reveal key={w.title} delay={i * 0.08} className="rounded-3xl bg-paper p-8">
-                <Icon name={w.icon} size={30} className="text-solar" />
-                <h3 className="mt-5 text-lg font-bold">{w.title}</h3>
-                <p className="mt-2 text-[0.95rem] leading-relaxed">{w.text}</p>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold text-navy">
+          <Reveal className="flex flex-wrap justify-center gap-3">
             {['Safety-first installations', 'Genuine manufacturer warranties', 'Transparent quotations', 'Responsive after-sales support'].map((t) => (
-              <span key={t} className="inline-flex items-center gap-2">
-                <CheckCircle2 size={17} className="text-solar" aria-hidden="true" /> {t}
+              <span key={t} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-navy">
+                <CheckCircle2 size={17} className="text-flame" aria-hidden="true" /> {t}
               </span>
             ))}
           </Reveal>

@@ -10,7 +10,7 @@ export default function Faq({ items }) {
       {items.map((f, i) => {
         const isOpen = open === i;
         return (
-          <li key={f.q} className={`rounded-2xl border transition ${isOpen ? 'border-solar/40 bg-white shadow-[0_20px_40px_-25px_rgba(10,31,51,0.3)]' : 'border-line bg-white'}`}>
+          <li key={f.q} className={`rounded-2xl border transition ${isOpen ? 'border-solar/40 bg-white shadow-[0_20px_40px_-25px_rgba(11,21,16,0.3)]' : 'border-line bg-white'}`}>
             <h3>
               <button
                 type="button"

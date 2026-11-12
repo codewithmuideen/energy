@@ -61,7 +61,7 @@ function Dropdown({ item, solid }) {
             transition={{ duration: 0.25, ease: EASE }}
             className="absolute left-1/2 top-full w-[620px] -translate-x-1/2 pt-4"
           >
-            <div className="grid grid-cols-2 gap-1 rounded-2xl border border-line bg-white p-3 shadow-[0_30px_60px_-20px_rgba(10,31,51,0.35)]">
+            <div className="grid grid-cols-2 gap-1 rounded-2xl border border-line bg-white p-3 shadow-[0_30px_60px_-20px_rgba(11,21,16,0.35)]">
               {item.children.map((c) => (
                 <Link key={c.to} to={c.to} className="group flex items-center gap-3 rounded-xl p-3 transition hover:bg-paper">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-solar-50 text-solar-600 transition group-hover:bg-solar group-hover:text-white">
@@ -110,8 +110,14 @@ export default function Navbar() {
       <div className={`hidden transition-all duration-500 lg:block ${solid ? 'pointer-events-none lg:-mt-10 lg:opacity-0' : ''}`}>
         <TopBar />
       </div>
-      <div className={`transition-all duration-500 ${solid ? 'bg-white/95 shadow-[0_10px_30px_-15px_rgba(10,31,51,0.25)] backdrop-blur-md' : 'bg-transparent'}`}>
-        <nav className="container-x flex h-[68px] items-center justify-between gap-4 sm:h-[76px]" aria-label="Main">
+      {/* Transparent over the dark hero; becomes a floating white pill once scrolled */}
+      <div className={`container-x transition-all duration-500 ${solid ? 'pt-2 sm:pt-3' : 'pt-0'}`}>
+        <nav
+          className={`flex h-[64px] items-center justify-between gap-4 transition-all duration-500 sm:h-[72px] ${
+            solid ? 'rounded-2xl bg-white/95 px-3 shadow-[0_18px_40px_-18px_rgba(11,21,16,0.35)] ring-1 ring-line backdrop-blur-md sm:px-5' : 'px-0'
+          }`}
+          aria-label="Main"
+        >
           <Link to="/" aria-label={`${SITE.brand} home`} className="shrink-0">
             <Logo tone={solid ? 'dark' : 'light'} />
           </Link>
@@ -134,7 +140,7 @@ export default function Navbar() {
                     {({ isActive }) => (
                       <>
                         {item.label}
-                        {isActive && <span className="absolute inset-x-3.5 bottom-0.5 h-0.5 rounded-full bg-solar" />}
+                        {isActive && <span className={`absolute bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full ${solid ? 'bg-flame' : 'bg-lime'}`} />}
                       </>
                     )}
                   </NavLink>
@@ -144,7 +150,7 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
-            <Link to="/contact" className="btn btn-primary hidden !px-6 !py-3.5 sm:inline-flex">
+            <Link to="/contact" className={`btn hidden !px-6 !py-3.5 sm:inline-flex ${solid ? 'btn-primary' : 'btn-lime'}`}>
               Get a Quote <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <button
@@ -208,7 +214,7 @@ export default function Navbar() {
               </ul>
               <div className="space-y-3 border-t border-line bg-paper p-5 text-sm">
                 <a href={`tel:${SITE.phoneHref}`} className="flex items-center gap-3 font-semibold text-navy">
-                  <Phone size={16} className="text-solar" aria-hidden="true" /> {SITE.phoneDisplay}
+                  <Phone size={16} className="text-flame" aria-hidden="true" /> {SITE.phoneDisplay}
                 </a>
                 <a href={`mailto:${SITE.email}`} className="flex items-center gap-3 break-all text-navy">
                   <Mail size={16} className="shrink-0 text-solar" aria-hidden="true" /> {SITE.email}

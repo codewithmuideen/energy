@@ -4,10 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import '@fontsource-variable/manrope';
-import '@fontsource/montserrat/latin-500.css';
-import '@fontsource/montserrat/latin-600.css';
-import '@fontsource/montserrat/latin-700.css';
-import '@fontsource/montserrat/latin-800.css';
+import '@fontsource-variable/bricolage-grotesque';
 import './index.css';
 
 import App from './App.jsx';
