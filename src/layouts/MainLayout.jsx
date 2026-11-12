@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { EASE } from '../components/Reveal';
@@ -51,9 +51,18 @@ export default function MainLayout({ children }) {
   const { pathname } = useLocation();
   const reduced = useReducedMotion();
   useSpotlight();
+  const [curtain, setCurtain] = useState(null);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (!reduced) setCurtain(pathname);
+  }, [pathname, reduced]);
 
   return (
-    <>
+    <div className="relative w-full max-w-[100vw] overflow-x-clip">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-navy">
         Skip to content
       </a>
@@ -63,6 +72,7 @@ export default function MainLayout({ children }) {
       <main id="main" tabIndex={-1} className="outline-none">
         <motion.div
           key={pathname}
+          className="overflow-x-clip"
           initial={reduced ? false : { opacity: 0, y: 24, filter: 'blur(8px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none', transform: 'none' } }}
           transition={{ duration: 0.8, ease: EASE }}
@@ -70,20 +80,19 @@ export default function MainLayout({ children }) {
           {children}
         </motion.div>
       </main>
-      {/* Route curtain: a navy panel with the solar accent sweeps up on every navigation */}
-      <AnimatePresence>
-        {!reduced && (
-          <motion.div
-            key={pathname}
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-0 z-[70] origin-top border-b-4 border-solar bg-navy"
-            initial={{ scaleY: 1 }}
-            animate={{ scaleY: 0 }}
-            transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Route curtain: sweeps up only when navigating between pages (never on first load), then unmounts */}
+      {curtain && (
+        <motion.div
+          key={curtain}
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-[70] origin-top border-b-4 border-solar bg-navy"
+          initial={{ scaleY: 1 }}
+          animate={{ scaleY: 0 }}
+          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+          onAnimationComplete={() => setCurtain(null)}
+        />
+      )}
       <Footer />
-    </>
+    </div>
   );
 }

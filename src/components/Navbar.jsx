@@ -10,7 +10,7 @@ import { EASE } from './Reveal';
 
 function TopBar() {
   return (
-    <div className="hidden border-b border-white/10 text-[0.8rem] text-white/75 lg:block">
+    <div className="border-b border-white/10 text-[0.8rem] text-white/75">
       <div className="container-x flex h-10 items-center justify-between gap-6">
         <div className="flex items-center gap-6">
           <a href={`mailto:${SITE.email}`} className="inline-flex items-center gap-2 transition hover:text-white">
@@ -106,11 +106,12 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className={`transition-all duration-500 ${solid ? 'pointer-events-none -mt-10 opacity-0' : ''}`}>
+      {/* Top info bar exists on desktop only; it collapses once the page scrolls */}
+      <div className={`hidden transition-all duration-500 lg:block ${solid ? 'pointer-events-none lg:-mt-10 lg:opacity-0' : ''}`}>
         <TopBar />
       </div>
       <div className={`transition-all duration-500 ${solid ? 'bg-white/95 shadow-[0_10px_30px_-15px_rgba(10,31,51,0.25)] backdrop-blur-md' : 'bg-transparent'}`}>
-        <nav className="container-x flex h-[76px] items-center justify-between gap-6" aria-label="Main">
+        <nav className="container-x flex h-[68px] items-center justify-between gap-4 sm:h-[76px]" aria-label="Main">
           <Link to="/" aria-label={`${SITE.brand} home`} className="shrink-0">
             <Logo tone={solid ? 'dark' : 'light'} />
           </Link>
@@ -149,12 +150,12 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobile(true)}
-              className={`grid h-11 w-11 place-items-center rounded-full border transition xl:hidden ${solid ? 'border-line text-navy' : 'border-white/30 text-white'}`}
+              className={`grid h-11 w-11 place-items-center rounded-full border transition xl:hidden ${solid ? 'border-line bg-white text-navy' : 'border-white/40 bg-navy/60 text-white backdrop-blur'}`}
               aria-label="Open menu"
               aria-expanded={mobile}
               aria-controls="mobile-menu"
             >
-              <Menu size={20} />
+              <Menu size={22} strokeWidth={2.25} />
             </button>
           </div>
         </nav>

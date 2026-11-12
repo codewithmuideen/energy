@@ -53,7 +53,7 @@ export default function Contact() {
                 </span>
                 <span className="min-w-0">
                   <span className="block text-sm text-muted">{c.label}</span>
-                  <span className="mt-0.5 block break-words font-display text-[0.95rem] font-bold text-navy">{c.value}</span>
+                  <span className="mt-0.5 block break-all font-display text-[0.95rem] font-bold text-navy">{c.value}</span>
                 </span>
               </>
             );

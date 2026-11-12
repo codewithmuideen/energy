@@ -25,9 +25,9 @@ function Hero() {
   const reduced = useReducedMotion();
   const a = (d) => (reduced ? {} : { initial: { opacity: 0, y: 30 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.9, ease: EASE, delay: d } });
   return (
-    <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-navy pb-36 pt-36 md:pb-44">
+    <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-navy pb-32 pt-28 sm:pt-36 md:pb-44">
       <div className="absolute inset-0 -z-10">
-        <BackgroundVideo src="/videos/solar-installers.mp4" mobileSrc="/videos/solar-installers-mobile.mp4" poster="/images/solar-installers-poster.webp" eager controls controlsClass="top-24 right-4 md:top-auto md:bottom-40 md:right-8" label="hero video" />
+        <BackgroundVideo src="/videos/solar-installers.mp4" mobileSrc="/videos/solar-installers-mobile.mp4" poster="/images/solar-installers-poster.webp" eager controls controlsClass="bottom-28 right-4 md:bottom-40 md:right-8" label="hero video" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-navy/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/50" />
       </div>
@@ -43,21 +43,21 @@ function Hero() {
           animateOnMount
           delay={0.15}
           text="Clean power. Every hour of the day."
-          className="mt-7 max-w-4xl font-display text-[clamp(2.6rem,6.4vw,5.4rem)] font-extrabold leading-[1.05] tracking-[-0.035em] !text-white"
+          className="mt-7 max-w-4xl font-display text-[clamp(2.4rem,6.4vw,5.4rem)] font-extrabold leading-[1.05] tracking-[-0.035em] !text-white"
           wordClass={(w) => (w === 'Every' || w === 'hour' ? 'bg-gradient-to-r from-solar-400 to-sun-soft bg-clip-text text-transparent' : '')}
         />
-        <motion.p {...a(0.32)} className="mt-7 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+        <motion.p {...a(0.32)} className="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg md:text-xl">
           We design, install and maintain solar and battery systems that keep homes and businesses running, without the noise, fumes and fuel bills of generators.
         </motion.p>
-        <motion.div {...a(0.44)} className="mt-10 flex flex-wrap items-center gap-4">
-          <Link to="/contact" className="btn btn-primary !px-7 !py-4 text-base">
-            Get a Free Quote <ArrowRight size={18} aria-hidden="true" />
+        <motion.div {...a(0.44)} className="mt-8 flex items-center gap-2.5 sm:mt-10 sm:gap-4">
+          <Link to="/contact" className="btn btn-primary !gap-1.5 !px-4 !py-3 !text-[0.8rem] sm:!gap-2.5 sm:!px-7 sm:!py-4 sm:!text-base">
+            Get a Free Quote <ArrowRight size={16} aria-hidden="true" />
           </Link>
-          <Link to="/services" className="btn btn-outline-light !px-7 !py-4 text-base">
-            Explore Solutions
+          <Link to="/services" className="btn btn-outline-light !px-4 !py-3 !text-[0.8rem] sm:!px-7 sm:!py-4 sm:!text-base">
+            Our Solutions
           </Link>
         </motion.div>
-        <motion.ul {...a(0.56)} className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm font-medium text-white/80">
+        <motion.ul {...a(0.56)} className="mt-8 grid grid-cols-2 gap-x-4 gap-y-2.5 text-[0.8rem] font-medium text-white/80 sm:mt-12 sm:flex sm:flex-wrap sm:gap-x-8 sm:gap-y-3 sm:text-sm">
           {['Free site survey', 'Tier-1 equipment', 'Lithium battery storage', '24/7 monitoring'].map((t) => (
             <li key={t} className="inline-flex items-center gap-2">
               <CheckCircle2 size={17} className="text-solar-400" aria-hidden="true" /> {t}

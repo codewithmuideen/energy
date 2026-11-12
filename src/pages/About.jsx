@@ -48,12 +48,11 @@ export default function About() {
                 <Img name="roof-team" alt="Installation crew carrying solar panels across a large roof" sizes="(min-width:1024px) 45vw, 100vw" />
               </div>
             </div>
-            <div className="absolute -bottom-8 -right-4 max-w-[240px] rounded-2xl bg-solar p-6 text-white shadow-xl md:-right-8">
+            <div className="absolute -bottom-8 right-3 max-w-[240px] md:-right-8 rounded-2xl bg-solar p-6 text-white shadow-xl ">
               <p className="font-display text-4xl font-extrabold">Lagos</p>
               <p className="mt-1 text-sm text-white/85">Head office in Surulere, serving clients nationwide.</p>
             </div>
-            <span className="absolute -left-3 -top-3 h-6 w-6 bg-solar" aria-hidden="true" />
-            <span className="absolute -left-3 top-3 h-6 w-6 -translate-x-6 bg-navy" aria-hidden="true" />
+            <span className="absolute -left-3 -top-3 hidden h-6 w-6 bg-solar sm:block" aria-hidden="true" />
           </Reveal>
           <div>
             <SectionHeading tag="Who we are" title="A glimpse closer at ApexCore Energy" />

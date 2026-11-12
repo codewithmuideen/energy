@@ -43,6 +43,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* Side-entering animations must never widen the page on touch devices */
+    overflow-x: clip;
   }
   body {
     font-family: var(--font-sans);
