@@ -39,11 +39,11 @@ function Dropdown({ item, solid }) {
     timer.current = setTimeout(() => setOpen(false), 120);
   };
   return (
-    <li className="relative" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
+    <li className="relative flex" onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
       <NavLink
         to={item.to}
         className={({ isActive }) =>
-          `inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.9rem] font-semibold transition ${
+          `inline-flex h-10 items-center gap-1 rounded-full px-3.5 text-[0.9rem] font-semibold transition ${
             solid ? (isActive ? 'text-solar-600' : 'text-navy hover:text-solar-600') : isActive ? 'text-white' : 'text-white/85 hover:text-white'
           }`
         }
@@ -120,12 +120,12 @@ export default function Navbar() {
               item.children ? (
                 <Dropdown key={item.to} item={item} solid={solid} />
               ) : (
-                <li key={item.to}>
+                <li key={item.to} className="flex">
                   <NavLink
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) =>
-                      `relative rounded-full px-3.5 py-2 text-[0.9rem] font-semibold transition ${
+                      `relative inline-flex h-10 items-center rounded-full px-3.5 text-[0.9rem] font-semibold transition ${
                         solid ? (isActive ? 'text-solar-600' : 'text-navy hover:text-solar-600') : isActive ? 'text-white' : 'text-white/85 hover:text-white'
                       }`
                     }
@@ -133,7 +133,7 @@ export default function Navbar() {
                     {({ isActive }) => (
                       <>
                         {item.label}
-                        {isActive && <span className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full bg-solar" />}
+                        {isActive && <span className="absolute inset-x-3.5 bottom-0.5 h-0.5 rounded-full bg-solar" />}
                       </>
                     )}
                   </NavLink>
@@ -143,16 +143,7 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
-            <a href={`tel:${SITE.phoneHref}`} className={`hidden items-center gap-3 lg:flex ${solid ? 'text-navy' : 'text-white'}`}>
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-solar text-white">
-                <Phone size={17} aria-hidden="true" />
-              </span>
-              <span className="leading-tight">
-                <span className={`block text-[0.7rem] ${solid ? 'text-muted' : 'text-white/65'}`}>Call us anytime</span>
-                <span className="block text-sm font-bold">{SITE.phoneDisplay}</span>
-              </span>
-            </a>
-            <Link to="/contact" className="btn btn-primary hidden !px-5 !py-3 sm:inline-flex">
+            <Link to="/contact" className="btn btn-primary hidden !px-6 !py-3.5 sm:inline-flex">
               Get a Quote <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <button
