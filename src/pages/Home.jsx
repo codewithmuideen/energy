@@ -527,7 +527,7 @@ function FaqSection() {
           <SectionHeading tag="FAQ" title="Questions people ask before going solar" intro="Straight answers to the most common questions. Can't find yours? Our advisors are a phone call away." />
           <Reveal delay={0.1} className="relative mt-10 max-w-sm">
             <div className="arch relative aspect-[4/5] overflow-hidden ring-1 ring-line">
-              <BackgroundVideo src="/videos/wind-sunset.mp4" poster="/images/wind-sunset-poster.webp" controls controlsClass="right-4 top-[42%]" label="wind farm video" />
+              <BackgroundVideo src="/videos/solar-hero.mp4" mobileSrc="/videos/solar-hero-mobile.mp4" poster="/images/solar-hero-poster.webp" controls controlsClass="right-4 top-[42%]" label="solar farm at golden hour video" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent" />
             </div>
             <a href={`tel:${SITE.phoneHref}`} className="absolute -right-2 bottom-8 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-xl sm:-right-10">
