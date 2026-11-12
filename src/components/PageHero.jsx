@@ -1,59 +1,63 @@
-import { useRef } from 'react';
-import Breadcrumbs from './Breadcrumbs';
+import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import Img from './Img';
-import BackgroundVideo from './BackgroundVideo';
-import ShaderBackground from './ShaderBackground';
-import { Reveal, RevealLines } from './Reveal';
-import { useGsap } from '../hooks/useGsap';
-import { gsap } from '../animations/gsapConfig';
+import { EASE } from './Reveal';
 
-/**
- * Cinematic page header shared by inner pages. Background can be an image, a video or the shader.
- * `title` is an array of lines; use <em> for serif accents.
- */
-export default function PageHero({ eyebrow, title, intro, crumbs, image, imageAlt = '', video, shader = false, children, compact = false }) {
-  const ref = useRef(null);
-  useGsap(ref, () => {
-    gsap.to('[data-hero-bg]', {
-      yPercent: 18,
-      scale: 1.08,
-      ease: 'none',
-      scrollTrigger: { trigger: ref.current, start: 'top top', end: 'bottom top', scrub: true },
-    });
-  });
-
+/** Inner-page banner: photo, navy overlay, breadcrumb trail and title. */
+export default function PageHero({ crumbs = [], tag, title, intro, image = 'farm-sky', imageAlt = '' }) {
+  const reduced = useReducedMotion();
+  const anim = (d = 0) => (reduced ? {} : { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.8, ease: EASE, delay: d } });
   return (
-    <section ref={ref} className={`grain relative isolate flex overflow-hidden bg-ink ${compact ? 'min-h-[68svh]' : 'min-h-[86svh]'} items-end`}>
-      <div data-hero-bg className="absolute inset-0 -z-20 will-change-transform">
-        {shader ? (
-          <ShaderBackground />
-        ) : video ? (
-          <BackgroundVideo src={video} poster={`/images/${image}-poster.webp`} eager />
-        ) : (
-          <Img name={image} alt={imageAlt} priority sizes="100vw" />
-        )}
+    <section className="relative isolate overflow-hidden bg-navy pb-20 pt-40 md:pb-28 md:pt-52">
+      <div className="absolute inset-0 -z-10">
+        <Img name={image} alt={imageAlt} priority sizes="100vw" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/70 to-transparent" />
       </div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/55 to-ink/35" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" />
-
-      <div className="container-x relative pb-16 pt-44 md:pb-24">
-        {crumbs && (
-          <Reveal className="mb-10">
-            <Breadcrumbs items={crumbs} />
-          </Reveal>
+      {/* Decorative solar cells */}
+      <div className="pointer-events-none absolute bottom-0 right-0 hidden grid-cols-3 gap-1 md:grid" aria-hidden="true">
+        <span className="h-8 w-8" />
+        <span className="h-8 w-8 bg-white/15" />
+        <span className="h-8 w-8 bg-solar" />
+        <span className="h-8 w-8 bg-white/10" />
+        <span className="h-8 w-8 bg-solar/60" />
+        <span className="h-8 w-8 bg-white" />
+      </div>
+      <div className="container-x">
+        {crumbs.length > 0 && (
+          <motion.nav aria-label="Breadcrumb" {...anim(0)}>
+            <ol className="flex flex-wrap items-center gap-1.5 text-sm text-white/70">
+              {crumbs.map((c, i) => (
+                <li key={c.to} className="flex items-center gap-1.5">
+                  {i > 0 && <ChevronRight size={14} className="text-solar-400" aria-hidden="true" />}
+                  {i < crumbs.length - 1 ? (
+                    <Link to={c.to} className="hover:text-white">
+                      {c.label}
+                    </Link>
+                  ) : (
+                    <span className="font-semibold text-white" aria-current="page">
+                      {c.label}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </motion.nav>
         )}
-        {eyebrow && (
-          <Reveal>
-            <span className="eyebrow">{eyebrow}</span>
-          </Reveal>
+        {tag && (
+          <motion.span className="tag tag-dark mt-8" {...anim(0.05)}>
+            {tag}
+          </motion.span>
         )}
-        <RevealLines as="h1" animateOnMount delay={0.35} lines={title} className="h-display mt-6 max-w-6xl text-white [&_em]:serif [&_em]:text-gold" />
+        <motion.h1 className="mt-5 max-w-4xl font-display text-[clamp(2.3rem,5.5vw,4.2rem)] font-bold leading-[1.05] !text-white" {...anim(0.1)}>
+          {title}
+        </motion.h1>
         {intro && (
-          <Reveal delay={0.6}>
-            <p className="lead mt-8 max-w-2xl text-white/75">{intro}</p>
-          </Reveal>
+          <motion.p className="lead mt-6 max-w-2xl text-white/75" {...anim(0.2)}>
+            {intro}
+          </motion.p>
         )}
-        {children}
       </div>
     </section>
   );

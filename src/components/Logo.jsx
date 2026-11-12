@@ -1,65 +1,50 @@
 import { useId } from 'react';
 
-// Geometry shared with the brand asset generator (brand/gen.js): faceted apex "A" + oil-drop core.
-export const MARK_PATHS = {
-  left: 'M100 20 L100 86 L60 174 L26 174 Z',
-  right: 'M100 20 L174 174 L140 174 L100 86 Z',
-  drop: 'M100 99 C100 99 119 123 119 140 A19 19 0 1 1 81 140 C81 123 100 99 100 99 Z',
-};
-
-export function LogoMark({ className = 'h-10 w-10', mono, title }) {
+/**
+ * ApexCore mark: an "A" built from solar-panel cells (three tiers, split down the middle)
+ * with the sun rising behind its right shoulder. Geometry is mirrored in scripts/brand.py.
+ */
+export function LogoMark({ className = 'h-10 w-10', title }) {
   const id = useId().replace(/:/g, '');
-  const fills = mono
-    ? { l: mono, r: mono, d: mono }
-    : { l: `url(#${id}L)`, r: `url(#${id}R)`, d: `url(#${id}D)` };
   return (
-    <svg viewBox="22 16 156 162" className={className} role={title ? 'img' : undefined} aria-hidden={title ? undefined : true}>
+    <svg viewBox="0 0 64 64" className={className} role={title ? 'img' : undefined} aria-hidden={title ? undefined : true}>
       {title && <title>{title}</title>}
-      {!mono && (
-        <defs>
-          <linearGradient id={`${id}L`} x1="0.2" y1="0" x2="0.6" y2="1">
-            <stop offset="0" stopColor="#F6E3B0" />
-            <stop offset="0.45" stopColor="#D9B672" />
-            <stop offset="1" stopColor="#B08A45" />
-          </linearGradient>
-          <linearGradient id={`${id}R`} x1="0.8" y1="0" x2="0.4" y2="1">
-            <stop offset="0" stopColor="#C6A15B" />
-            <stop offset="0.55" stopColor="#9C7838" />
-            <stop offset="1" stopColor="#6F5224" />
-          </linearGradient>
-          <linearGradient id={`${id}D`} x1="0.3" y1="0" x2="0.7" y2="1">
-            <stop offset="0" stopColor="#5BEBD8" />
-            <stop offset="0.5" stopColor="#16B6A4" />
-            <stop offset="1" stopColor="#0A7469" />
-          </linearGradient>
-        </defs>
-      )}
-      <path d={MARK_PATHS.left} fill={fills.l} />
-      <path d={MARK_PATHS.right} fill={fills.r} />
-      <path d={MARK_PATHS.drop} fill={fills.d} />
+      <defs>
+        <linearGradient id={`${id}g`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3CC274" />
+          <stop offset="1" stopColor="#127040" />
+        </linearGradient>
+        <linearGradient id={`${id}s`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#FFD27A" />
+          <stop offset="1" stopColor="#F59E0B" />
+        </linearGradient>
+        <mask id={`${id}m`} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+          <rect width="64" height="64" fill="#fff" />
+          <circle cx="48" cy="15" r="12.5" fill="#000" />
+          <path d="M27 45 L33.6 58 H20.4 Z" fill="#000" />
+          <rect x="0" y="22" width="64" height="2.6" fill="#000" />
+          <rect x="0" y="34" width="64" height="2.6" fill="#000" />
+          <rect x="25.8" y="0" width="2.4" height="46" fill="#000" />
+        </mask>
+      </defs>
+      <circle cx="48" cy="15" r="9" fill={`url(#${id}s)`} />
+      <path d="M27 6 L52 58 H2 Z" fill={`url(#${id}g)`} mask={`url(#${id}m)`} />
     </svg>
   );
 }
 
 /** Horizontal lockup. tone="light" for dark backgrounds, "dark" for light backgrounds. */
-export default function Logo({ tone = 'light', tagline = true, className = '' }) {
-  const apex = tone === 'light' ? 'text-white' : 'text-ink';
-  const tag = tone === 'light' ? 'text-mist' : 'text-deep';
+export default function Logo({ tone = 'dark', className = '' }) {
+  const word = tone === 'light' ? 'text-white' : 'text-navy';
+  const sub = tone === 'light' ? 'text-white/60' : 'text-muted';
   return (
-    <span className={`inline-flex items-center gap-3 ${className}`}>
+    <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark className="h-10 w-10 shrink-0 md:h-11 md:w-11" />
-      <span className="inline-grid leading-none">
-        <span className={`font-logo text-[1.32rem] font-bold tracking-[0.06em] md:text-[1.45rem] ${apex}`}>
-          APEX <span className="text-gold">CORE</span>
+      <span className="flex flex-col leading-none">
+        <span className={`font-display text-[1.4rem] font-extrabold tracking-[-0.03em] md:text-[1.55rem] ${word}`}>
+          Apex<span className="text-solar">Core</span>
         </span>
-        {tagline && (
-          <span
-            className={`mt-[5px] border-t border-gold/70 pt-[5px] font-logo text-[0.43rem] font-semibold md:text-[0.47rem] ${tag}`}
-            style={{ textAlign: 'justify', textAlignLast: 'justify', letterSpacing: '0.18em' }}
-          >
-            OIL AND ENERGY RESOURCES LTD
-          </span>
-        )}
+        <span className={`mt-1 font-display text-[0.56rem] font-semibold uppercase tracking-[0.42em] ${sub}`}>Energy · Solar</span>
       </span>
     </span>
   );

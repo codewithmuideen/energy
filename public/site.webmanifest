@@ -1,19 +1,11 @@
 {
-  "name": "Apex Core Oil and Energy Resources Ltd",
-  "short_name": "Apex Core",
+  "name": "ApexCore Energy",
+  "short_name": "ApexCore",
   "icons": [
-    {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
   ],
-  "theme_color": "#071725",
-  "background_color": "#071725",
+  "theme_color": "#0a1f33",
+  "background_color": "#0a1f33",
   "display": "standalone"
 }

@@ -1,155 +1,140 @@
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { motion, useScroll, useSpring } from 'motion/react';
-import { ArrowLeft, Check, Link2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarDays, Clock } from 'lucide-react';
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import Seo from '../components/Seo';
-import Breadcrumbs from '../components/Breadcrumbs';
 import Img from '../components/Img';
-import InsightCard, { PlaceholderBadge } from '../components/InsightCard';
-import { Reveal, RevealLines } from '../components/Reveal';
-import NotFound from './NotFound';
-import { getInsight, insights, readingTime } from '../data/insights';
+import PageHero from '../components/PageHero';
+import { Reveal } from '../components/Reveal';
+import { formatDate, getInsight, insights } from '../data/insights';
 import { SITE } from '../data/site';
-import { breadcrumbSchema } from '../utils/seo';
+import { absoluteUrl, breadcrumbSchema } from '../utils/seo';
+import NotFound from './NotFound';
 
-function ShareBar({ url, title }) {
-  const [copied, setCopied] = useState(false);
-  const u = encodeURIComponent(url);
-  const t = encodeURIComponent(title);
-  const links = [
-    { label: 'Share on LinkedIn', icon: FaLinkedinIn, href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
-    { label: 'Share on X', icon: FaXTwitter, href: `https://twitter.com/intent/tweet?url=${u}&text=${t}` },
-    { label: 'Share on Facebook', icon: FaFacebookF, href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
-    { label: 'Share on WhatsApp', icon: FaWhatsapp, href: `https://wa.me/?text=${t}%20${u}` },
-  ];
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable */
-    }
-  };
-  return (
-    <div className="flex items-center gap-2">
-      <span className="mr-2 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-slate-strong">Share</span>
-      {links.map(({ label, icon: Icon, href }) => (
-        <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid h-10 w-10 place-items-center rounded-full border border-ink/15 text-ink transition hover:border-ink hover:bg-ink hover:text-white">
-          <Icon size={14} />
-        </a>
-      ))}
-      <button type="button" onClick={copy} aria-label="Copy link" className="grid h-10 w-10 place-items-center rounded-full border border-ink/15 text-ink transition hover:border-ink hover:bg-ink hover:text-white">
-        {copied ? <Check size={15} /> : <Link2 size={15} />}
-      </button>
-      <span className="sr-only" aria-live="polite">
-        {copied ? 'Link copied' : ''}
-      </span>
-    </div>
-  );
+function Block({ b }) {
+  if (b.type === 'h2') return <h2>{b.text}</h2>;
+  if (b.type === 'quote') return <blockquote>{b.text}</blockquote>;
+  if (b.type === 'ul')
+    return (
+      <ul>
+        {b.items.map((x) => (
+          <li key={x}>{x}</li>
+        ))}
+      </ul>
+    );
+  return <p>{b.text}</p>;
 }
 
 export default function InsightDetails() {
   const { slug } = useParams();
-  const article = getInsight(slug);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
-  if (!article) return <NotFound />;
+  const post = getInsight(slug);
+  if (!post) return <NotFound />;
 
-  const url = `${SITE.url}/insights/${article.slug}`;
-  const related = [...insights.filter((a) => a !== article && a.category === article.category), ...insights.filter((a) => a !== article && a.category !== article.category)].slice(0, 3);
+  const path = `/insights/${post.slug}`;
+  const url = encodeURIComponent(absoluteUrl(path));
+  const text = encodeURIComponent(post.title);
   const crumbs = [
     { label: 'Home', to: '/' },
     { label: 'Insights', to: '/insights' },
-    { label: article.title, to: `/insights/${article.slug}` },
+    { label: post.category, to: path },
+  ];
+  const related = insights.filter((i) => i.slug !== post.slug).slice(0, 3);
+  const share = [
+    { label: 'Share on LinkedIn', icon: FaLinkedinIn, href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}` },
+    { label: 'Share on X', icon: FaXTwitter, href: `https://twitter.com/intent/tweet?url=${url}&text=${text}` },
+    { label: 'Share on Facebook', icon: FaFacebookF, href: `https://www.facebook.com/sharer/sharer.php?u=${url}` },
+    { label: 'Share on WhatsApp', icon: FaWhatsapp, href: `https://wa.me/?text=${text}%20${url}` },
   ];
 
   return (
     <>
-      {/* Placeholder articles are noindex so sample copy never appears in search results */}
       <Seo
-        title={article.title}
-        description={article.excerpt}
-        path={`/insights/${article.slug}`}
+        title={post.title}
+        description={post.excerpt}
+        path={path}
         type="article"
-        image={`/images/${article.image}-1600.webp`}
-        noindex={article.placeholder}
-        schema={[breadcrumbSchema(crumbs)]}
+        image={`/images/${post.image}-1600.webp`}
+        noindex={post.placeholder}
+        schema={[
+          breadcrumbSchema(crumbs),
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            datePublished: post.date,
+            image: `${SITE.url}/images/${post.image}-1600.webp`,
+            publisher: { '@id': `${SITE.url}/#organization` },
+          },
+        ]}
       />
-      <motion.div aria-hidden="true" className="fixed inset-x-0 top-0 z-[75] h-[3px] origin-left bg-gold" style={{ scaleX: progress }} />
+      <PageHero crumbs={crumbs} tag={post.category} title={post.title} image={post.image} imageAlt={post.imageAlt} />
 
-      <article>
-        <header className="grain relative overflow-hidden bg-ink pb-16 pt-44 md:pb-20">
-          <div className="container-x max-w-5xl">
-            <Reveal>
-              <Breadcrumbs items={crumbs} />
-            </Reveal>
-            <Reveal delay={0.1} className="mt-10 flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-[0.2em] text-mist">
-              <span className="text-gold">{article.category}</span>
-              <span className="h-px w-6 bg-white/30" aria-hidden="true" />
-              <span>{readingTime(article)} min read</span>
-              {article.placeholder && <PlaceholderBadge className="text-gold-soft" />}
-            </Reveal>
-            <RevealLines as="h1" animateOnMount delay={0.3} lines={[article.title]} className="mt-6 text-[clamp(2.2rem,5vw,4.6rem)] font-semibold leading-[1.04] tracking-tight text-white" />
-            <Reveal delay={0.5}>
-              <p className="lead mt-8 max-w-3xl text-white/75">{article.excerpt}</p>
-            </Reveal>
-          </div>
-        </header>
-
-        <div className="bg-white">
-          <div className="container-x -mt-px max-w-6xl">
-            <Reveal className="relative -top-0 aspect-[16/8] overflow-hidden rounded-[2px]">
-              <Img name={article.image} alt={article.imageAlt} priority sizes="(min-width:1200px) 1100px, 100vw" />
-            </Reveal>
-          </div>
-
-          <div className="container-x grid max-w-6xl gap-12 py-16 md:py-24 lg:grid-cols-12">
-            <aside className="lg:col-span-3">
-              <div className="lg:sticky lg:top-32">
-                <ShareBar url={url} title={article.title} />
-                <Link to="/insights" className="link-line mt-8 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gold-deep">
-                  <ArrowLeft size={14} aria-hidden="true" /> All insights
-                </Link>
+      <section className="section pb-40 md:pb-48">
+        <div className="container-x grid gap-12 lg:grid-cols-12">
+          <article className="lg:col-span-8">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
+              <span className="inline-flex items-center gap-2">
+                <CalendarDays size={15} aria-hidden="true" /> {formatDate(post.date)}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Clock size={15} aria-hidden="true" /> {post.readTime}
+              </span>
+              {post.placeholder && <span className="rounded-full bg-paper px-3 py-1 text-xs font-semibold uppercase tracking-wider">Sample article</span>}
+            </div>
+            <Reveal className="mt-8 overflow-hidden rounded-3xl">
+              <div className="aspect-[16/9]">
+                <Img name={post.image} alt={post.imageAlt} sizes="(min-width:1024px) 60vw, 100vw" />
               </div>
-            </aside>
-            <div className="lg:col-span-8 lg:col-start-5">
-              {article.placeholder && (
-                <p className="mb-10 rounded-[2px] border border-dashed border-gold-deep/50 bg-sand px-5 py-4 text-sm text-slate-strong">
-                  <strong className="text-ink">Sample article.</strong> This placeholder content demonstrates the article layout and is not an official publication of Apex
-                  Core Oil and Energy Resources Ltd.
-                </p>
-              )}
-              <div className="space-y-6 text-[1.075rem] leading-[1.85] text-slate-strong">
-                {article.body.map((b, i) => {
-                  if (b.type === 'h2') return <h2 key={i} className="!mt-12 text-2xl font-semibold tracking-tight text-ink md:text-3xl">{b.text}</h2>;
-                  if (b.type === 'quote')
-                    return (
-                      <blockquote key={i} className="!my-12 border-l-2 border-gold pl-6 font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] italic leading-snug text-ink">
-                        {b.text}
-                      </blockquote>
-                    );
-                  return <p key={i} className={i === 0 ? 'first-letter:float-left first-letter:mr-3 first-letter:font-serif first-letter:text-7xl first-letter:leading-[0.8] first-letter:text-gold-deep' : ''}>{b.text}</p>;
-                })}
+            </Reveal>
+            <p className="lead mt-10 font-medium text-navy">{post.excerpt}</p>
+            <div className="prose-article">
+              {post.body.map((b, i) => (
+                <Block key={i} b={b} />
+              ))}
+            </div>
+            <div className="mt-12 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8">
+              <Link to="/insights" className="link-arrow">
+                <ArrowLeft size={16} aria-hidden="true" /> All articles
+              </Link>
+              <ul className="flex items-center gap-2">
+                {share.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="grid h-10 w-10 place-items-center rounded-full bg-paper text-navy transition hover:bg-solar hover:text-white">
+                      <s.icon size={15} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+          <aside className="lg:col-span-4">
+            <div className="space-y-6 lg:sticky lg:top-28">
+              <div className="relative overflow-hidden rounded-3xl bg-navy p-8">
+                <div className="cell-grid-light absolute inset-0" aria-hidden="true" />
+                <div className="relative">
+                  <h2 className="text-xl font-bold !text-white">Thinking about solar?</h2>
+                  <p className="mt-3 text-sm leading-relaxed text-white/70">Get a free site survey and a clear, no-obligation proposal from our engineers.</p>
+                  <Link to="/contact" className="btn btn-primary mt-6 w-full">
+                    Get a Free Quote <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+              <div className="rounded-3xl bg-paper p-6">
+                <h2 className="font-display text-base font-bold">More articles</h2>
+                <ul className="mt-4 space-y-4">
+                  {related.map((r) => (
+                    <li key={r.slug}>
+                      <Link to={`/insights/${r.slug}`} className="group flex gap-4">
+                        <span className="h-16 w-20 shrink-0 overflow-hidden rounded-xl">
+                          <img src={`/images/${r.image}-800.webp`} alt="" loading="lazy" className="h-full w-full object-cover" />
+                        </span>
+                        <span className="text-sm font-semibold leading-snug text-navy group-hover:text-solar-600">{r.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </article>
-
-      <section className="bg-sand py-24 md:py-32" aria-labelledby="related-heading">
-        <div className="container-x">
-          <h2 id="related-heading" className="h-section text-ink">
-            Related <em className="serif text-gold-deep">reading.</em>
-          </h2>
-          <div className="mt-14 grid gap-12 md:grid-cols-3">
-            {related.map((a, i) => (
-              <Reveal key={a.slug} delay={i * 0.08}>
-                <InsightCard article={a} />
-              </Reveal>
-            ))}
-          </div>
+          </aside>
         </div>
       </section>
     </>

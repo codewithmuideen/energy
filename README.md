@@ -1,14 +1,14 @@
-# Apex Core Oil and Energy Resources Ltd: Corporate Website
+# ApexCore Energy: Solar & Renewable Energy Website
 
-React + Vite corporate website for **apexcoreenergy.com**.
+React + Vite website for **ApexCore Energy** (Apex Core Oil and Energy Resources Ltd), a Lagos-based solar and renewable energy company: solar systems, battery storage, mini-grids, energy audits and maintenance.
 
 ## Quick start
 
 ```bash
 npm install
-npm run dev       # local development at http://localhost:5173
+npm run dev       # http://localhost:5173
 npm run build     # production build into dist/
-npm run preview   # serve the production build locally
+npm run preview   # serve the production build
 ```
 
 Requires Node 18+.
@@ -18,98 +18,58 @@ Requires Node 18+.
 | Area | Libraries |
 | --- | --- |
 | Core | React 18, Vite 5, React Router 6, Tailwind CSS 4 |
-| Motion | Motion for React, GSAP + ScrollTrigger, Lenis smooth scroll |
-| 3D / shaders | three.js, React Three Fiber, drei, custom GLSL (raw WebGL shader gradient) |
-| Forms | React Hook Form + Zod |
+| Motion | Motion for React (scroll reveals, counters, menus) |
+| Forms | React Hook Form + Zod, serverless email via Resend |
 | SEO | react-helmet-async, JSON-LD schema, sitemap.xml, robots.txt |
-| Icons | Lucide (UI), React Icons (social/share brand marks only) |
-| Fonts | Manrope, Instrument Serif, Montserrat (logo), self-hosted via Fontsource |
+| Icons / fonts | Lucide, React Icons (social only), Montserrat + Manrope (self-hosted) |
 
-React 18 is used deliberately: `react-helmet-async` and React Three Fiber v8 are both stable on it.
-
-## Project structure
+## Structure
 
 ```
-api/contact.js        Serverless contact handler (Resend email API)
-brand/                Logo system: SVG masters, PNG logos, favicon sets, generator script
-public/               Static assets: images (WebP 800/1600), videos, favicons, robots, sitemap, OG image
-src/
-  animations/         GSAP + Lenis setup, Motion variants
-  components/         Navbar, Footer, Preloader (liquid logo), CustomCursor, ScrollProgress,
-                      MagneticButton, PageTransition, PageHero, ShaderBackground, GlassPanel, Seo...
-  data/               site.js (contact details + feature flags), services, insights, content
-  hooks/              useMediaQuery / useCanRender3D, useScroll / useInView, useGsap
-  layouts/            MainLayout
-  pages/              Home, About, Services, ServiceDetails, Business, Sustainability,
-                      Insights, InsightDetails, Contact, PrivacyPolicy, Terms, Credits, NotFound
-  sections/           Homepage sections (Hero, CompanyIntro, ServicesSection, WhyApexCore, ...)
-  three/              EnergyScene (lazy/visibility wrapper), LiquidObject, EnergyGlobe
-  utils/seo.js        Schema.org helpers
+api/contact.js        Serverless quote/contact handler (Resend)
+scripts/brand.py      Generates favicons + og-image.jpg from the logo geometry (Pillow)
+public/images         WebP photos (name-800 / name-1600) and video posters
+public/videos         Background videos (hero has a lighter mobile version)
+src/components        Navbar, Footer, PageHero, Logo, QuoteForm, Cards, Faq, BackgroundVideo...
+src/data              site.js (contact details, flags), services, projects, insights, content
+src/pages             Home, About, Services, ServiceDetails, Projects, ProjectDetails,
+                      Sustainability, Insights, InsightDetails, Contact, legal pages, Credits, 404
 ```
 
-## Contact form: required setup
+## Brand
 
-The form posts JSON to `/api/contact` (override with `VITE_CONTACT_ENDPOINT`).
-`api/contact.js` validates input, filters bots with a honeypot, rate-limits, and sends mail through
-[Resend](https://resend.com). **No credentials are ever shipped to the browser.**
+- **Logo**: an "A" built from solar-panel cells with a rising sun (`src/components/Logo.jsx`, `public/favicon.svg`).
+- **Colours**: navy `#0a1f33`, solar green `#1f9d55`, sun amber `#f5a623` (accent only). Tokens live in `src/index.css`.
+- Regenerate PNG favicons and the social image with `python scripts/brand.py`.
 
-Set these as environment variables in your hosting dashboard (see `.env.example`):
+## Quote form setup
+
+The form posts JSON to `/api/contact` (override with `VITE_CONTACT_ENDPOINT`). Set these in your hosting dashboard:
 
 ```
 RESEND_API_KEY=...
 CONTACT_TO=support@apexcoreenergy.com
-CONTACT_FROM="Apex Core Website <web@apexcoreenergy.com>"   # must be a Resend-verified domain
+CONTACT_FROM="ApexCore Website <web@apexcoreenergy.com>"   # Resend-verified domain
 ```
 
-Until these are set, the endpoint returns a clear error and the form tells visitors to email
-support@apexcoreenergy.com directly. It never shows a fake "success".
+Until they are set, the form shows a clear error with the phone number and email; it never fakes success.
 
-**Hosting notes**
+## Content to review before launch
 
-- **Vercel** (recommended): `api/contact.js` deploys automatically as a function; `vercel.json` adds SPA rewrites and cache headers.
-- **Netlify / other static hosts**: `public/_redirects` handles SPA routing. Either port `api/contact.js` to a Netlify Function, or point `VITE_CONTACT_ENDPOINT` at any form backend.
-
-## Content that needs company approval
-
-Everything below is written so that nothing unverified is claimed, but it should still be reviewed:
-
-- **Vision & mission** (`src/data/content.js`): proposed brand statements.
-- **Service areas** (`src/data/services.js`): describe *intended* scope. Pages carry a note that capabilities, licences and partner arrangements are confirmed per engagement.
-- **Insights** (`src/data/insights.js`): all articles are **placeholders**. They show a visible "Sample article" label, are set to `noindex`, and are excluded from the sitemap. Replace them with approved articles and set `placeholder: false`.
-- **Privacy Policy & Terms**: templates referencing the Nigeria Data Protection Act 2023. Have them reviewed by a legal adviser.
-- **No statistics, certifications, offices, projects or partners** appear anywhere on the site.
+- **Projects** (`src/data/projects.js`): typical solution showcases with representative sizes, not specific client records. Replace with real case studies (with client permission) when available.
+- **Highlights** (`src/data/content.js`): capability statements ("up to 70% fuel savings", "25-yr panel warranty"). Confirm they match your equipment and offers.
+- **Insights**: sample articles, labelled "Sample" and set to `noindex`.
+- **Vision, mission, privacy policy and terms**: proposed text for company and legal review.
 
 ## Feature flags (`src/data/site.js`)
 
 | Flag | Default | Purpose |
 | --- | --- | --- |
-| `features.mapEmbed` | `false` | Embed Google Maps on Contact once the exact pin is verified (a "Open in Google Maps" panel shows meanwhile). |
-| `features.whatsapp` | `false` | Show a WhatsApp enquiry button once the number is confirmed as a WhatsApp line. |
-| `social` | `{}` | Add verified profile URLs (`linkedin`, `x`, `facebook`, `instagram`). Nothing renders until set. |
+| `features.mapEmbed` | `true` | Google Map on the Contact page |
+| `features.whatsapp` | `false` | WhatsApp button once the number is confirmed |
+| `social` | `{}` | Verified profile URLs (`linkedin`, `facebook`, `instagram`, `x`, `youtube`) |
 
 ## Media & licensing
 
-- Hero and section videos plus several stills come from **Mixkit** (free commercial licence, no attribution required).
-- Offshore platform photographs come from **Wikimedia Commons** (CC0 / public domain).
-- All credits are listed on `/credits`. The imagery is illustrative and does not depict Apex Core assets.
-- To replace an image, drop `name-800.webp` and `name-1600.webp` into `public/images/` and reference `name`.
-
-## Performance & accessibility
-
-- Routes are code-split with `React.lazy`; three.js loads only when a 3D section nears the viewport, on capable devices.
-- WebGL scenes pause when off-screen; low-power and reduced-motion users get static fallbacks.
-- Videos are muted, play only in view, use a lighter mobile file in the hero, have a pause control, and fall back to posters for reduced motion or data saver.
-- Lenis, custom cursor, parallax and pinned scrolling are disabled under `prefers-reduced-motion`.
-- Skip link, keyboard-operable menus (Escape closes), focus rings, labelled form fields with ARIA error messaging.
-
-## SEO
-
-- Unique title, description, canonical, Open Graph and Twitter tags per page via `<Seo>`.
-- Organization schema (static in `index.html` + per page), BreadcrumbList, Service and ContactPage schema.
-- `public/sitemap.xml` and `public/robots.txt`. Update `lastmod` when content changes.
-- As a client-rendered SPA, consider pre-rendering (e.g. `vite-plugin-prerender` or hosting-level prerendering) for the strongest crawl results.
-
-## Brand assets
-
-The logo system lives in `brand/`. Run `node brand/gen.js` (requires `@resvg/resvg-js` and the fonts in
-`brand/fonts/`) to regenerate all PNG/SVG logos and favicons.
+- Videos: **Mixkit** (Mixkit Free License). Photos: **Unsplash** (Unsplash License). See `/credits`.
+- To swap an image, add `name-800.webp` and `name-1600.webp` to `public/images/` and reference `name`.

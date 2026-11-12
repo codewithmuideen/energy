@@ -1,23 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import { Pause, Play } from 'lucide-react';
-import { useMediaQuery } from '../hooks/useMediaQuery';
+
+const mq = (q) => typeof window !== 'undefined' && window.matchMedia(q).matches;
 
 /**
  * Muted looping background video that only plays while on screen.
- * - Picks a lighter `mobileSrc` on small screens.
- * - Falls back to the poster image for reduced-motion users or data-saver connections.
- * - Exposes a pause control (WCAG 2.2.2) when `controls` is set.
+ * Uses `mobileSrc` on small screens; shows the poster for reduced-motion or data-saver users.
+ * `controls` adds a pause button (WCAG 2.2.2).
  */
-export default function BackgroundVideo({ src, mobileSrc, poster, className = '', controls = false, label = 'background video', eager = false }) {
+export default function BackgroundVideo({
+  src,
+  mobileSrc,
+  poster,
+  className = '',
+  controls = false,
+  controlsClass = 'bottom-6 right-5 md:bottom-8 md:right-8',
+  label = 'background video',
+  eager = false,
+}) {
   const ref = useRef(null);
-  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
-  const small = useMediaQuery('(max-width: 767px)');
   const [paused, setPaused] = useState(false);
-  const [saveData, setSaveData] = useState(false);
-
-  useEffect(() => setSaveData(!!navigator.connection?.saveData), []);
-  const showVideo = !reduced && !saveData;
-  const source = small && mobileSrc ? mobileSrc : src;
+  const [env] = useState(() => ({
+    reduced: mq('(prefers-reduced-motion: reduce)'),
+    small: mq('(max-width: 767px)'),
+    saveData: typeof navigator !== 'undefined' && !!navigator.connection?.saveData,
+  }));
+  const showVideo = !env.reduced && !env.saveData;
+  const source = env.small && mobileSrc ? mobileSrc : src;
 
   useEffect(() => {
     const v = ref.current;
@@ -31,7 +40,7 @@ export default function BackgroundVideo({ src, mobileSrc, poster, className = ''
     );
     io.observe(v);
     return () => io.disconnect();
-  }, [showVideo, paused, source]);
+  }, [showVideo, paused]);
 
   const toggle = () => {
     const v = ref.current;
@@ -49,14 +58,14 @@ export default function BackgroundVideo({ src, mobileSrc, poster, className = ''
     <>
       {showVideo ? (
         <video
-          key={source}
           ref={ref}
           className={`h-full w-full object-cover ${className}`}
           poster={poster}
           muted
           loop
           playsInline
-          preload={eager ? 'auto' : 'none'}
+          autoPlay={eager}
+          preload={eager ? 'auto' : 'metadata'}
           aria-hidden="true"
         >
           <source src={source} type="video/mp4" />
@@ -68,7 +77,7 @@ export default function BackgroundVideo({ src, mobileSrc, poster, className = ''
         <button
           type="button"
           onClick={toggle}
-          className="glass absolute bottom-6 right-5 z-20 grid h-11 w-11 place-items-center rounded-full text-white transition hover:border-gold/60 md:bottom-10 md:right-10"
+          className={`absolute z-20 grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur transition hover:bg-white hover:text-navy ${controlsClass}`}
           aria-label={paused ? `Play ${label}` : `Pause ${label}`}
         >
           {paused ? <Play size={16} /> : <Pause size={16} />}

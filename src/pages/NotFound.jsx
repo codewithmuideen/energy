@@ -1,37 +1,26 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowRight, SunDim } from 'lucide-react';
 import Seo from '../components/Seo';
-import ShaderBackground from '../components/ShaderBackground';
-import { LogoMark } from '../components/Logo';
-import { Reveal } from '../components/Reveal';
 
 export default function NotFound() {
   return (
     <>
-      <Seo title="Page Not Found" description="The page you are looking for could not be found." path="/404" noindex />
-      <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-ink">
-        <div className="absolute inset-0 -z-10 opacity-90">
-          <ShaderBackground />
-        </div>
-        <div className="container-x text-center">
-          <Reveal>
-            <LogoMark className="mx-auto h-16 w-16" />
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-10 font-serif text-[clamp(6rem,18vw,14rem)] italic leading-none text-gold">404</p>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">This page has moved, or never existed.</h1>
-            <p className="mx-auto mt-4 max-w-md text-mist">Let&rsquo;s get you back on course.</p>
-          </Reveal>
-          <Reveal delay={0.3} className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link to="/" className="btn btn-gold">
-              <ArrowLeft size={16} aria-hidden="true" /> Back to Home
+      <Seo title="Page not found" path="/404" noindex />
+      <section className="relative overflow-hidden bg-navy pb-48 pt-44 md:pb-56 md:pt-56">
+        <div className="cell-grid-light absolute inset-0" aria-hidden="true" />
+        <div className="container-x relative text-center">
+          <SunDim size={56} className="mx-auto text-sun" aria-hidden="true" />
+          <p className="mt-6 font-display text-[clamp(5rem,14vw,9rem)] font-extrabold leading-none text-white/10">404</p>
+          <h1 className="-mt-6 font-display text-[clamp(1.8rem,4vw,3rem)] font-bold !text-white">This page is off the grid</h1>
+          <p className="mx-auto mt-4 max-w-md text-white/70">The page you are looking for has moved or does not exist.</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link to="/" className="btn btn-primary">
+              Back to Home <ArrowRight size={16} aria-hidden="true" />
             </Link>
-            <Link to="/contact" className="btn btn-ghost">
+            <Link to="/contact" className="btn btn-outline-light">
               Contact Us
             </Link>
-          </Reveal>
+          </div>
         </div>
       </section>
     </>

@@ -7,7 +7,7 @@ const sections = [
     title: 'Who we are',
     body: (
       <p>
-        This website is operated by {SITE.name} (&ldquo;Apex Core&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;), whose office is at {SITE.addressLine} This policy explains how
+        This website is operated by {SITE.name} (&ldquo;ApexCore Energy&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;), whose office is at {SITE.addressLine} This policy explains how
         we handle personal data collected through apexcoreenergy.com.
       </p>
     ),
@@ -18,7 +18,7 @@ const sections = [
       <>
         <p>We collect only the information needed to respond to you and operate the website:</p>
         <ul>
-          <li>Details you submit through our contact form: your name, email address, telephone number (optional), subject and message.</li>
+          <li>Details you submit through our quote and contact forms: your name, telephone number, email address, the service you are interested in, property type, location and any message.</li>
           <li>Basic technical information processed by our hosting provider, such as IP address and browser type, for security and reliability.</li>
         </ul>
       </>
@@ -28,7 +28,7 @@ const sections = [
     title: 'How we use your information',
     body: (
       <ul>
-        <li>To respond to your enquiry and continue any resulting business conversation.</li>
+        <li>To respond to your enquiry, arrange a site survey and prepare a quotation.</li>
         <li>To keep the website secure and functioning properly.</li>
         <li>To meet legal or regulatory obligations where they apply.</li>
       </ul>
@@ -57,7 +57,7 @@ const sections = [
     body: (
       <p>
         This website does not use advertising or tracking cookies. It may store a small, non-identifying value in your browser for the current session (for example,
-        to avoid replaying the opening animation).
+        to remember interface preferences).
       </p>
     ),
   },
@@ -86,7 +86,7 @@ export default function PrivacyPolicy() {
     <LegalLayout
       title="Privacy Policy"
       path="/privacy-policy"
-      description="How Apex Core Oil and Energy Resources Ltd collects, uses and protects personal information submitted through its website."
+      description="How ApexCore Energy (Apex Core Oil and Energy Resources Ltd) collects, uses and protects personal information submitted through its website."
       intro="How we collect, use and protect the information you share with us."
       sections={sections}
     />

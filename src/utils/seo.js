@@ -6,12 +6,14 @@ export const DEFAULT_OG_IMAGE = `${SITE.url}/og-image.jpg`;
 
 export const organizationSchema = () => ({
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'LocalBusiness'],
   '@id': `${SITE.url}/#organization`,
   name: SITE.name,
-  alternateName: SITE.shortName,
+  alternateName: SITE.brand,
+  description: SITE.description,
   url: SITE.url,
-  logo: `${SITE.url}/images/apexcore-mark-full.png`,
+  logo: `${SITE.url}/android-chrome-512x512.png`,
+  image: `${SITE.url}/og-image.jpg`,
   email: SITE.email,
   telephone: SITE.phoneHref,
   address: {

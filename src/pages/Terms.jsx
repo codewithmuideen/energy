@@ -13,12 +13,11 @@ const sections = [
     body: (
       <>
         <p>
-          Content on this website is provided for general information about Apex Core and its areas of business. It does not constitute an offer, professional advice
+          Content on this website is provided for general information about ApexCore Energy and its solar and renewable energy services. It does not constitute an offer, professional advice
           or a binding commitment to provide any product or service.
         </p>
         <p>
-          Service descriptions set out the intended scope of our business. Any engagement is subject to separate written agreement, and specific capabilities, licences
-          and partner arrangements are confirmed on a case-by-case basis.
+          System sizes, savings and timelines shown on this website are typical or indicative. Every installation is designed after a site survey, and any engagement is subject to a written quotation and agreement.
         </p>
       </>
     ),
@@ -31,7 +30,7 @@ const sections = [
     title: 'Intellectual property',
     body: (
       <p>
-        The Apex Core name, logo and original website content belong to {SITE.name}. Photography and video are used under their respective licences; see{' '}
+        The ApexCore Energy name, logo and original website content belong to {SITE.name}. Photography and video are used under their respective licences; see{' '}
         <Link to="/credits">Media Credits</Link>. You may not reproduce our branding or content without permission.
       </p>
     ),
@@ -72,7 +71,7 @@ export default function Terms() {
     <LegalLayout
       title="Terms & Conditions"
       path="/terms"
-      description="Terms and conditions for using the Apex Core Oil and Energy Resources Ltd website."
+      description="Terms and conditions for using the ApexCore Energy website."
       intro="The terms that apply when you use this website."
       sections={sections}
     />
